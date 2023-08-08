@@ -1,0 +1,31 @@
+Que:-  Deploy and run a container using Dockerfile mentioned at /path/to/directory" (Jboss-eap application image and container should run a standalon.sh command once it is    started.) 
+- You will be asked to customize the dockerfile
+- Name for the container should be as mentioned in the question only.
+
+                      Solution Steps
+                     
+ mkdir Projects
+ cd Projects                    
+ curl -O https://download.jboss.org/wildly/20.0.1.Final/wildfly-20.0.1.Final.tar.gz --output wildfly
+ tar -xzf wildfly
+ mkdir jboss-project
+ cd jboss-project
+ move to wildfly zip file in jboss-project directory
+ vim Dockerfile
+ 
+FROM jboss/wildfly:23.0.1.Final
+MAINTAINER "rohitsuryawanshi43@gmail.com"
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+ENV JBOSS_HOME /opt/jboss/wildfly
+USER jboss
+COPY wildfly-20.0.1.Final.zip /opt/jboss
+RUN unzip wildfly-20.0.1.Final.zip -d /opt/jboss
+EXPOSE 8080
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0"] 
+
+docker build -t "rohitsudocker/wildflyimage" .
+docker images
+docker run -it -d --name=jboss-eap -p 8080:8080 rohitsudocker/wildflyimage
+docker ps
+docker inspect jboss-eap | grep IPAddress | tail -1 | cut -d ':' -f2 | tr -d ' |,|"'c
+IPAdress:8080

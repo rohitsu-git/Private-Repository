@@ -1,0 +1,53 @@
+In this assignment we will see how to run a complete WordPress Blog and MYSQL Database Server
+on Docker Containers running on Docker Linux Host.
+
+------------------------------------------------------------------------------------
+
+for performing this we need two images wordpress and mysql
+both images available on Docker hub registry server
+step1:- pull mysql and wordpress image from docker hub registry server with latest tag
+
+# docker pull wordrdpress:latest
+# docker pull mysql:latest
+
+-->Create a MySQL Database Container
+Before we create my WordPress Blog container, we will create a MySQL Database Server
+Container using the line below.
+-----Note: Me must set the password to get MySQL to start-----
+step2:- launch container named mysql by image mysql using mysql password grras
+
+# docker run -d --name=mysql -e MYSQL_ROOT_PASSWORD=grras -e MYSQL_DATABASE=wordpress mysql
+
+-->Create WordPress Container
+Now that our Database Server Is up and running
+we will create my WordPress Application Container with all the MYSQL Container Details below.
+step3:-
+
+# docker inspect mysql 
+
+     {copy top IP Address (172.17.0.2)} 
+
+# docker run -d --name=wordpress --link=mysql -p 8081:80 -e WORDPRESS_DB_HOST=172.17.0.2:3306 \-e WORDPRESS_DB_USER=root -e WORDPRESS_DB_PASSWORD=grras -e
+WORDPRESS_DB_NAME=wordpress \-e WORDPRESS_TABLE_PREFIX=wp_ -d wordpress
+
+# hostname -i 
+
+copy to this ip addresss and pest to browser 
+   
+   ipadress:8081
+=============================================================================================================================================
+
+---imp note (in above command replace mysql_container_ip from actual ip of mysql container)----deployment is done now configure wordpress for that follow step 4
+step4:- ->go to web browser(firefox,google chrome, microft edge)
+->go to url and type http://host_IP:8081
+now here you will see word press
+-> now select english(united states)
+-> All we need to do now, Is settings up Site Title and Password
+-> enter site title (grras) and password by default set and set username (admin)
+enter mail id (name@grras.com)
+->now click on install wordpress
+-> now click on login
+-> enter your seted username and password
+/////////////////////////////////////////////////////////////////////////
+our wordpress is finally setup with mysql
+assignment done
